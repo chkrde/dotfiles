@@ -1,0 +1,63 @@
+#!/bin/bash
+#
+# Script Name: createcurlkeys
+#
+# Description: Reads keys from a kube config and writes it to files to use with curl 
+#
+
+show_usage() {
+	echo "Usage: $(basename $0) KUBECONFIG [KEYFILE_PREFIX]"
+	echo "Create key files from kubeconfig for use with curl."
+	echo ""
+	echo "Example: $(basename $0) config prod-"
+	echo "         will create 3 files: prod-ca.pem, prod-client.pem and prod-client-key.pem"
+}
+
+if [[ $# -eq 0 ]]; then
+	show_usage
+	exit 1
+fi
+
+if [[ $1 == "-h" || $1 == "--help" ]]; then
+	show_usage
+	exit 0
+fi
+
+config=$1
+prefix=$2
+
+if [[ ! -f ${config} ]]; then
+	echo "${config} not found."
+	exit 1
+fi
+
+if [[ $(grep "\- context\:" ${config} | wc -l) -gt 1 ]]; then
+	echo "Found 2 or more contexts in ${config}. Only single context configs supported."
+	exit 1
+fi
+
+outclient="${prefix}client.pem"
+outkey="${prefix}client-key.pem"
+outauth="${prefix}ca.pem"
+
+if [[ -f ${outclient} || -f ${outkey} || -f ${outauth} ]]; then
+	read -r -p  "${outclient}, ${outkey} or ${outauth} already exist, overwrite? [y/N] " response
+	response=${response,,} # to lower
+	if [[ ! ${response} =~ ^(y) ]]; then
+		echo "Aborted. Try using KEYFILE_PREFIX."
+		exit 1
+	fi
+fi
+
+client=$(grep client-cert ${config} | cut -d" " -f 6)
+key=$(grep client-key-data ${config} | cut -d" " -f 6)
+auth=$(grep certificate-authority-data ${config} | cut -d" " -f 6)
+server=$(grep server ${config} | cut -d" " -f 6)
+
+echo "${client}" | base64 -d - > ${outclient}
+echo "${key}" | base64 -d - > ${outkey}
+echo "${auth}" | base64 -d - > ${outauth}
+
+echo "Keys written, curl example:"
+echo "curl --cert ${outclient} --key ${outkey} --cacert ${outauth} ${server}/apis"
+
