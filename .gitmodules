@@ -1,3 +1,6 @@
 [submodule "bingit/kubectx"]
 	path = bingit/kubectx
 	url = https://github.com/ahmetb/kubectx
+[submodule "bingit/tmux-cssh"]
+	path = bingit/tmux-cssh
+	url = https://github.com/dennishafemann/tmux-cssh
