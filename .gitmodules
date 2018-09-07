@@ -1,0 +1,3 @@
+[submodule "bingit/kubectx"]
+	path = bingit/kubectx
+	url = https://github.com/ahmetb/kubectx
