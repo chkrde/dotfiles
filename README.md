@@ -26,5 +26,14 @@ xargs -I{} mv {} .dotfiles-backup/{}
 ```
 
 ### Add/update submodule
+```bash
 dotfiles submodule add <remote> <folder>
 dotfiles submodule update --init --remote
+```
+
+### Packages
+```bash
+sudo dpkg --set-selections < .dpkglist.txt
+sudo apt-get -y update
+sudo apt-get dselect-upgrade
+```
