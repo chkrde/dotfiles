@@ -15,6 +15,7 @@ git clone --bare git@github.com:chkrde/dotfiles.git $HOME/.dotfiles
 alias dotfiles="/usr/bin/git --git-dir=$HOME/.dotfiles/ --work-tree=$HOME"
 dotfiles checkout
 config config --local status.showUntrackedFiles no
+dotfiles submodule update --init --recursive
 ```
 
 ### Backup existing dotfiles:
@@ -23,3 +24,7 @@ mkdir -p .dotfiles-backup && \
 config checkout 2>&1 | egrep "\s+\." | awk {'print $1'} | \
 xargs -I{} mv {} .dotfiles-backup/{}
 ```
+
+### Add/update submodule
+dotfiles submodule add <remote> <folder>
+dotfiles submodule update --init --remote
