@@ -3,7 +3,7 @@
 # find git folders and pull
 #
 
-DIRS=("${HOME}/bingit/" "${HOME}/go/src/")
+DIRS=("${HOME}/go/src/")
 
 echo "Updating git repos..."
 
@@ -17,4 +17,7 @@ do
 		LC_ALL=C git pull 2>&1 | sed 's/^/  /' 
 	done
 done
+
+cd ~
+/usr/bin/git --git-dir=${HOME}/.dotfiles/ --work-tree=${HOME} submodule update --init --remote
 
