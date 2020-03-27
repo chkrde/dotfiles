@@ -14,7 +14,7 @@ echo ".dotfiles" >> .gitignore
 git clone --bare git@github.com:chkrde/dotfiles.git $HOME/.dotfiles
 alias dotfiles="/usr/bin/git --git-dir=$HOME/.dotfiles/ --work-tree=$HOME"
 dotfiles checkout
-config config --local status.showUntrackedFiles no
+dotfiles config --local status.showUntrackedFiles no
 dotfiles submodule update --init --recursive
 ```
 
