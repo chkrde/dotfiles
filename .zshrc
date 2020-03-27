@@ -1,5 +1,8 @@
 # If you come from bash you might have to change your $PATH.
-export PATH=$HOME/bin:/snap/bin:/usr/local/bin:/usr/local/go/bin:$PATH
+export PATH=$HOME/bin:$HOME/code/gopath/bin:/snap/bin:/usr/local/bin:/usr/local/go/bin:$PATH
+
+# disable user@host in prompt
+DEFAULT_USER=$USER
 
 # Path to your oh-my-zsh installation.
 export ZSH="${HOME}/.oh-my-zsh"
@@ -7,8 +10,10 @@ export ZSH="${HOME}/.oh-my-zsh"
 # Set name of the theme to load. Optionally, if you set this to "random"
 # it'll load a random theme each time that oh-my-zsh is loaded.
 # See https://github.com/robbyrussell/oh-my-zsh/wiki/Themes
-ZSH_THEME="agnoster"
+#ZSH_THEME="agnoster"
 #ZSH_THEME="robbyrussell"
+#ZSH_THEME="oxide"
+ZSH_THEME="bureau"
 
 # Set list of themes to load
 # Setting this variable when ZSH_THEME=random
@@ -63,11 +68,13 @@ ZSH_THEME="agnoster"
 # Example format: plugins=(rails git textmate ruby lighthouse)
 # Add wisely, as too many plugins slow down shell startup.
 # zsh-completions
+# shrink-path
 plugins=(
-  git ssh-agent kubectl systemd tmux-cssh
+  git ssh-agent systemd tmux-cssh kubectl
 )
 
-zstyle :omz:plugins:ssh-agent identities id_rsa.priv id_rsa_git
+zstyle :omz:plugins:ssh-agent identities id_rsa
+
 
 source $ZSH/oh-my-zsh.sh
 
@@ -88,11 +95,7 @@ source $ZSH/oh-my-zsh.sh
 # Compilation flags
 # export ARCHFLAGS="-arch x86_64"
 
-# ssh
-# export SSH_KEY_PATH="~/.ssh/rsa_id"
-
-export CLOUD_SDK_REPO="cloud-sdk-$(lsb_release -c -s)"
-export GOPATH=${HOME}/go
+export GOPATH=${HOME}/code/gopath
 
 # Set personal aliases, overriding those provided by oh-my-zsh libs,
 # plugins, and themes. Aliases can be placed here, though oh-my-zsh
@@ -103,10 +106,47 @@ export GOPATH=${HOME}/go
 # alias zshconfig="mate ~/.zshrc"
 # alias ohmyzsh="mate ~/.oh-my-zsh"
 alias k="kubectl"
+alias kctx="kubectx"
+alias kns="kubens"
 alias git="LC_ALL=C git"
 alias dotfiles="/usr/bin/git --git-dir=${HOME}/.dotfiles/ --work-tree=${HOME}"
+alias cdgo="cd ${HOME}/code/gopath/src"
+alias cdgit="cd ${HOME}/code/git"
+alias koff="kubeoff"
+alias kon="kubeon"
+alias watch='watch -c '
+alias sops="EDITOR='code --wait' sops"
 
 #THIS MUST BE AT THE END OF THE FILE FOR SDKMAN TO WORK!!!
 export SDKMAN_DIR="$HOME/.sdkman"
 [[ -s "${HOME}/.sdkman/bin/sdkman-init.sh" ]] && source "${HOME}/.sdkman/bin/sdkman-init.sh"
+
+#Initialize pyenv and pyenv-virtualenv
+export PYENV_ROOT="$HOME/.pyenv"
+export PATH="${HOME}/.local/bin:$PYENV_ROOT/bin:$PATH"
+export GPG_TTY=$(tty)
+
+if command -v pyenv 1>/dev/null 2>&1; then
+    eval "$(pyenv init -)"
+fi
+eval "$(pyenv virtualenv-init -)"
+
+# enable bash complete
+autoload bashcompinit
+bashcompinit
+
+source <(kubectl completion zsh)
+
+# Generate terminal id
+export TERMINAL_ID=$(cat /dev/urandom | tr -dc 'a-zA-Z0-9' | fold -w 10 | head -n 1) 
+
+#KUBE_PS1_SYMBOL_ENABLE=false
+#KUBE_PS1_CTX_COLOR=green
+#KUBE_PS1_NS_COLOR=cyan
+#KUBE_PS1_PREFIX=[
+#KUBE_PS1_SUFFIX=]
+#KUBE_PS1_BG_COLOR=black
+# source $HOME/bingit/kube-ps1/kube-ps1.sh
+
+# RPROMPT='$(kube_ps1)'$RPROMPT
 

@@ -1,9 +1,0 @@
-[submodule "bingit/kubectx"]
-	path = bingit/kubectx
-	url = https://github.com/ahmetb/kubectx
-[submodule "bingit/tmux-cssh"]
-	path = bingit/tmux-cssh
-	url = https://github.com/dennishafemann/tmux-cssh
-[submodule "bingit/i3-gaps-deb"]
-	path = bingit/i3-gaps-deb
-	url = https://github.com/maestrogerardo/i3-gaps-deb
