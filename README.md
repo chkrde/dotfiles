@@ -1,5 +1,4 @@
-# dotfiles
-dotfiles :D
+# **Deprecated, moved to <https://github.com/chkrde/devbox>**
 
 ### Initial System:
 ```bash
