@@ -1,4 +1,4 @@
-# **Deprecated, moved to <https://github.com/chkrde/devbox>**
+# old
 
 ### Initial System:
 ```bash
